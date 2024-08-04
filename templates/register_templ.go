@@ -8,7 +8,7 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Home() templ.Component {
+func Register() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -34,7 +34,7 @@ func Home() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body><div class=\"container\">Hello Go Flaskr - with some Air for live reloading :-)</div></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body><div class=\"container\"><div class=\"col-md-6 offset-md-3\"><h2 class=\"mb-3 text-center\">Register</h2><form method=\"POST\" action=\"/register\"><label for=\"email\" class=\"form-label\">Email</label> <input id=\"email\" name=\"email\" type=\"text\" class=\"form-control\" autocomplete=\"off\"> <label for=\"password\" class=\"form-label\">Password</label> <input id=\"password\" name=\"password\" type=\"password\" class=\"form-control mb-3\"> <input type=\"submit\" class=\"btn btn-primary\" value=\"Register\"></form></div></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

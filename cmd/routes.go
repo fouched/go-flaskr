@@ -11,6 +11,7 @@ func routes() http.Handler {
 	mux := chi.NewRouter()
 
 	mux.Get("/", handlers.Home)
+	mux.Get("/register", handlers.RegisterGet)
 
 	return mux
 }
