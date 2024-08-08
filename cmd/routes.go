@@ -12,6 +12,6 @@ func routes() http.Handler {
 
 	mux.Get("/", handlers.Home)
 	mux.Get("/register", handlers.RegisterGet)
-
+	mux.Post("/register", handlers.RegisterPost)
 	return mux
 }
