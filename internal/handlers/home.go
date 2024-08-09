@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"github.com/fouched/go-flaskr/internal/render"
-	"github.com/fouched/go-flaskr/templates"
+	"github.com/fouched/go-flaskr/internal/templates"
 	"net/http"
 )
 

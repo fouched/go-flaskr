@@ -5,7 +5,7 @@ import (
 	"github.com/fouched/go-flaskr/internal/models"
 	"github.com/fouched/go-flaskr/internal/render"
 	"github.com/fouched/go-flaskr/internal/repo"
-	"github.com/fouched/go-flaskr/templates"
+	"github.com/fouched/go-flaskr/internal/templates"
 	"net/http"
 )
 
