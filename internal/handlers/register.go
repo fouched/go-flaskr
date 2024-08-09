@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/fouched/go-flaskr/internal/models"
 	"github.com/fouched/go-flaskr/internal/render"
-	"github.com/fouched/go-flaskr/models"
-	"github.com/fouched/go-flaskr/repo"
+	"github.com/fouched/go-flaskr/internal/repo"
 	"github.com/fouched/go-flaskr/templates"
 	"net/http"
 )

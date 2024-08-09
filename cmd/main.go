@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/fouched/go-flaskr/repo"
+	"github.com/fouched/go-flaskr/internal/repo"
 	"log"
 	"net/http"
 )

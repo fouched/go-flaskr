@@ -1,7 +1,7 @@
 package repo
 
 import (
-	"github.com/fouched/go-flaskr/models"
+	"github.com/fouched/go-flaskr/internal/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
