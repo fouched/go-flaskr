@@ -10,14 +10,13 @@ import (
 	"net/http"
 )
 
-func (a *HandlerConfig) RegisterGet(w http.ResponseWriter, r *http.Request) {
+func (a *HandlerConfig) LoginGet(w http.ResponseWriter, r *http.Request) {
 
-	component := templates.Register(validation.Form{})
+	component := templates.Login(validation.Form{})
 	_ = render.Template(w, r, component)
 }
 
-func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
-
+func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		fmt.Println(err)
@@ -26,26 +25,26 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 	form := validation.New(r.PostForm)
 	form.Required("email", "password")
 	if !form.Valid() {
-		component := templates.Register(*form)
+		component := templates.Login(*form)
 		_ = render.Template(w, r, component)
 		return
 	}
 
-	// validation passed persist the form
 	user := models.User{
 		Email:    r.Form.Get("email"),
 		Password: r.Form.Get("password"),
 	}
-
-	err = repo.InsertUser(user)
+	id, err := repo.Authenticate(user)
 	if err != nil {
-		fmt.Println(err)
-		form.Errors.Add("heading", "Unexpected error, please try again later.")
-		component := templates.Register(*form)
+		form.Errors.Add("heading", "Invalid credentials")
+		component := templates.Login(*form)
 		_ = render.Template(w, r, component)
 		return
 	}
+	fmt.Println("id:", id)
+	a.App.Session.Put(r.Context(), "user_id", id)
 
 	component := templates.Home()
 	_ = render.Template(w, r, component)
+
 }

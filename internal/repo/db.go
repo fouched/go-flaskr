@@ -11,7 +11,7 @@ var db *sql.DB
 
 const dbTimeout = time.Second * 3
 
-func CreateDb(dsn string) (*sql.DB, error) {
+func CreateDb(dsn string, refresh bool) (*sql.DB, error) {
 
 	conn, err := sql.Open("sqlite3", dsn)
 	if err != nil {
@@ -19,16 +19,18 @@ func CreateDb(dsn string) (*sql.DB, error) {
 	}
 	db = conn
 
-	// Loads schema from file
-	dot, _ := dotsql.LoadFromFile("./migrations/schema.sql")
-	// Run queries
-	_, err = dot.Exec(db, "drop-user-table")
-	_, err = dot.Exec(db, "drop-post-table")
-	_, err = dot.Exec(db, "create-user-table")
-	_, err = dot.Exec(db, "create-post-table")
+	if refresh {
+		// Loads schema from file
+		dot, _ := dotsql.LoadFromFile("./migrations/schema.sql")
+		// Run queries
+		_, err = dot.Exec(db, "drop-user-table")
+		_, err = dot.Exec(db, "drop-post-table")
+		_, err = dot.Exec(db, "create-user-table")
+		_, err = dot.Exec(db, "create-post-table")
 
-	if err != nil {
-		return nil, err
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return db, nil

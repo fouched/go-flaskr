@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func Home(w http.ResponseWriter, r *http.Request) {
+func (a *HandlerConfig) Home(w http.ResponseWriter, r *http.Request) {
 
 	component := templates.Home()
 	_ = render.Template(w, r, component)

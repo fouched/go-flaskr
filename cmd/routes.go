@@ -9,9 +9,13 @@ import (
 func routes() http.Handler {
 
 	mux := chi.NewRouter()
+	mux.Use(SessionLoad)
 
-	mux.Get("/", handlers.Home)
-	mux.Get("/register", handlers.RegisterGet)
-	mux.Post("/register", handlers.RegisterPost)
+	mux.Get("/", handlers.Instance.Home)
+	mux.Get("/register", handlers.Instance.RegisterGet)
+	mux.Post("/register", handlers.Instance.RegisterPost)
+	mux.Get("/login", handlers.Instance.LoginGet)
+	mux.Post("/login", handlers.Instance.LoginPost)
+
 	return mux
 }
