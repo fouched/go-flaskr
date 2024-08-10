@@ -1,31 +1,30 @@
 package templates
 
-import "github.com/fouched/go-flaskr/internal/validation"
+import "github.com/fouched/go-flaskr/internal/models"
 
-
-templ Login(f validation.Form) {
+templ Login(td *models.TemplateData) {
 
 	<!doctype html>
 	<html lang="en">
     @HtmlHeader()
 	<body>
-	@PageHeader()
+	@PageHeader(td)
 	<div class="container">
         <div class="col-md-6 offset-md-3">
             <h2 class="mb-3 text-center">Login</h2>
-            if f.Errors.Get("heading") != "" {
-                <div class="text-danger">{f.Errors.Get("heading")}</div>
+            if td.Form.Errors.Get("heading") != "" {
+                <div class="text-danger">{td.Form.Errors.Get("heading")}</div>
             }
             <form method="POST" action="/login">
                 <label for="email" class="form-label">Email</label>
                 <input id="email" name="email" type="text" class="form-control" autocomplete="off">
-                if f.Errors.Get("password") != "" {
-                    <div class="text-danger mb-3">{f.Errors.Get("email")}</div>
+                if td.Form.Errors.Get("password") != "" {
+                    <div class="text-danger mb-3">{td.Form.Errors.Get("email")}</div>
                 }
                 <label for="password" class="form-label">Password</label>
                 <input id="password" name="password" type="password" class="form-control">
-                if f.Errors.Get("password") != "" {
-                    <div class="text-danger mb-3">{f.Errors.Get("password")}</div>
+                if td.Form.Errors.Get("password") != "" {
+                    <div class="text-danger mb-3">{td.Form.Errors.Get("password")}</div>
                 }
                 <input type="submit" class="btn btn-primary mt-3" value="Login" />
             </form>

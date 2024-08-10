@@ -2,17 +2,19 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/fouched/go-flaskr/internal/forms"
 	"github.com/fouched/go-flaskr/internal/models"
 	"github.com/fouched/go-flaskr/internal/render"
 	"github.com/fouched/go-flaskr/internal/repo"
 	"github.com/fouched/go-flaskr/internal/templates"
-	"github.com/fouched/go-flaskr/internal/validation"
 	"net/http"
 )
 
 func (a *HandlerConfig) LoginGet(w http.ResponseWriter, r *http.Request) {
 
-	component := templates.Login(validation.Form{})
+	component := templates.Login(&models.TemplateData{
+		Form: forms.New(nil),
+	})
 	_ = render.Template(w, r, component)
 }
 
@@ -22,10 +24,12 @@ func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	form := validation.New(r.PostForm)
+	form := forms.New(r.PostForm)
 	form.Required("email", "password")
 	if !form.Valid() {
-		component := templates.Login(*form)
+		component := templates.Login(&models.TemplateData{
+			Form: form,
+		})
 		_ = render.Template(w, r, component)
 		return
 	}
@@ -37,14 +41,16 @@ func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 	id, err := repo.Authenticate(user)
 	if err != nil {
 		form.Errors.Add("heading", "Invalid credentials")
-		component := templates.Login(*form)
+		component := templates.Login(&models.TemplateData{
+			Form: form,
+		})
 		_ = render.Template(w, r, component)
 		return
 	}
 	fmt.Println("id:", id)
 	a.App.Session.Put(r.Context(), "user_id", id)
 
-	component := templates.Home()
+	component := templates.Home(&models.TemplateData{})
 	_ = render.Template(w, r, component)
 
 }

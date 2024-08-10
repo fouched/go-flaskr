@@ -1,11 +1,14 @@
 package templates
 
-templ Home() {
+import "github.com/fouched/go-flaskr/internal/models"
+
+templ Home(td *models.TemplateData) {
 	<!doctype html>
 	<html lang="en">
     @HtmlHeader()
 	<body>
-	@PageHeader()
+	@PageHeader(td)
+	<h2>PageFoo:{td.StringMap["PageFoo"]}</h2>
 	<div class="container">
         Hello Go Flaskr - with some Air for live reloading :-)
 	</div>
