@@ -12,9 +12,7 @@ import (
 
 func (a *HandlerConfig) LoginGet(w http.ResponseWriter, r *http.Request) {
 
-	component := templates.Login(&models.TemplateData{
-		Form: forms.New(nil),
-	})
+	component := templates.Login(DefaultTemplateData(r))
 	_ = render.Template(w, r, component)
 }
 

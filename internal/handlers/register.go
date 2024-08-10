@@ -12,14 +12,13 @@ import (
 
 func (a *HandlerConfig) RegisterGet(w http.ResponseWriter, r *http.Request) {
 
-	component := templates.Register(&models.TemplateData{
-		Form: forms.New(nil),
-	})
+	component := templates.Register(DefaultTemplateData(r))
 	_ = render.Template(w, r, component)
 }
 
 func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 
+	td := DefaultTemplateData(r)
 	err := r.ParseForm()
 	if err != nil {
 		fmt.Println(err)
@@ -28,9 +27,8 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
 	form.Required("email", "password")
 	if !form.Valid() {
-		component := templates.Register(&models.TemplateData{
-			Form: form,
-		})
+		td.Form = form
+		component := templates.Register(td)
 		_ = render.Template(w, r, component)
 		return
 	}
@@ -44,10 +42,8 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 	err = repo.InsertUser(user)
 	if err != nil {
 		fmt.Println(err)
-		form.Errors.Add("heading", "Unexpected error, please try again later.")
-		component := templates.Register(&models.TemplateData{
-			Form: form,
-		})
+		td.Form.Errors.Add("heading", "Unexpected error, please try again later.")
+		component := templates.Register(td)
 		_ = render.Template(w, r, component)
 		return
 	}

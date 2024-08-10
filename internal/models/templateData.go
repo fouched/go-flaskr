@@ -12,6 +12,6 @@ type TemplateData struct {
 	Success         string
 	Warning         string
 	Error           string
-	IsAuthenticated int
+	IsAuthenticated bool
 	Form            *forms.Form
 }
