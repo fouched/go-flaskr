@@ -52,6 +52,6 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component := templates.Home(&models.TemplateData{})
-	_ = render.Template(w, r, component)
+	// Good practice: prevent a post re-submit with a http redirect
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
