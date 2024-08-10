@@ -17,6 +17,7 @@ func (a *HandlerConfig) LoginGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
+
 	err := r.ParseForm()
 	if err != nil {
 		fmt.Println(err)
@@ -50,4 +51,12 @@ func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 	// Good practice: prevent a post re-submit with a http redirect
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 
+}
+
+// Logout logs a user out
+func (a *HandlerConfig) Logout(w http.ResponseWriter, r *http.Request) {
+
+	_ = a.App.Session.Destroy(r.Context())
+	_ = a.App.Session.RenewToken(r.Context())
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
