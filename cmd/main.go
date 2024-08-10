@@ -6,6 +6,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/fouched/go-flaskr/internal/config"
 	"github.com/fouched/go-flaskr/internal/handlers"
+	"github.com/fouched/go-flaskr/internal/helpers"
 	"github.com/fouched/go-flaskr/internal/render"
 	"github.com/fouched/go-flaskr/internal/repo"
 	"log"
@@ -60,6 +61,7 @@ func initApp() (*sql.DB, error) {
 	handlers.NewHandlers(hc)
 
 	render.NewRenderer(&app)
+	helpers.NewHelpers(&app)
 
 	return db, nil
 }

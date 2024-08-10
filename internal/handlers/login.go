@@ -47,10 +47,9 @@ func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 		_ = render.Template(w, r, component)
 		return
 	}
-	fmt.Println("id:", id)
-	a.App.Session.Put(r.Context(), "user_id", id)
 
-	component := templates.Home(&models.TemplateData{})
-	_ = render.Template(w, r, component)
+	a.App.Session.Put(r.Context(), "userId", id)
+	// Good practice: prevent a post re-submit with a http redirect
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 
 }

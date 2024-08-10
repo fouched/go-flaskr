@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"github.com/fouched/go-flaskr/internal/helpers"
+	"net/http"
+)
 
 // SessionLoad loads and saves the session on every request
 func SessionLoad(next http.Handler) http.Handler {
@@ -10,7 +13,7 @@ func SessionLoad(next http.Handler) http.Handler {
 // Auth can be used to protect routes
 func Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !session.Exists(r.Context(), "userId") {
+		if !helpers.IsAuthenticated(r) {
 			session.Put(r.Context(), "AuthError", 1)
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
