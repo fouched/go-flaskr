@@ -8,6 +8,7 @@ import (
 	"github.com/fouched/go-flaskr/internal/repo"
 	"github.com/fouched/go-flaskr/internal/templates"
 	"net/http"
+	"strings"
 )
 
 func (a *HandlerConfig) LoginGet(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +35,7 @@ func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := models.User{
-		Username: r.Form.Get("username"),
+		Username: strings.ToLower(r.Form.Get("username")),
 		Password: r.Form.Get("password"),
 	}
 	id, err := repo.Authenticate(user)
