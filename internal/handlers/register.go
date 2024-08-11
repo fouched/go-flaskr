@@ -8,6 +8,7 @@ import (
 	"github.com/fouched/go-flaskr/internal/repo"
 	"github.com/fouched/go-flaskr/internal/templates"
 	"net/http"
+	"strings"
 )
 
 func (a *HandlerConfig) RegisterGet(w http.ResponseWriter, r *http.Request) {
@@ -35,19 +36,23 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 
 	// forms passed persist the form
 	user := models.User{
-		Email:    r.Form.Get("email"),
+		Email:    strings.ToLower(r.Form.Get("email")),
 		Password: r.Form.Get("password"),
 	}
 
 	err = repo.InsertUser(user)
 	if err != nil {
 		fmt.Println(err)
-		td.Form.Errors.Add("heading", "Unexpected error, please try again later.")
+		if strings.HasPrefix(err.Error(), "UNIQUE constraint") {
+			td.Form.Errors.Add("heading", "Username already taken.")
+		} else {
+			td.Form.Errors.Add("heading", "Unexpected error, please try again later.")
+		}
 		component := templates.Register(td)
 		_ = render.Template(w, r, component)
 		return
 	}
 
 	// Good practice: prevent a post re-submit with a http redirect
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
