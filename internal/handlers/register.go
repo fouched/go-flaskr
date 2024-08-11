@@ -26,7 +26,7 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	form := forms.New(r.PostForm)
-	form.Required("email", "password")
+	form.Required("username", "password")
 	if !form.Valid() {
 		td.Form = form
 		component := templates.Register(td)
@@ -36,7 +36,7 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 
 	// forms passed persist the form
 	user := models.User{
-		Email:    strings.ToLower(r.Form.Get("email")),
+		Username: strings.ToLower(r.Form.Get("username")),
 		Password: r.Form.Get("password"),
 	}
 
@@ -44,7 +44,7 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 		if strings.HasPrefix(err.Error(), "UNIQUE constraint") {
-			td.Form.Errors.Add("heading", "Username already taken.")
+			td.Form.Errors.Add("heading", "Username "+user.Username+" already taken.")
 		} else {
 			td.Form.Errors.Add("heading", "Unexpected error, please try again later.")
 		}

@@ -16,7 +16,7 @@ func InsertUser(u models.User) error {
 		return err
 	}
 
-	_, err = stmt.Exec(u.Email, hashedPwd)
+	_, err = stmt.Exec(u.Username, hashedPwd)
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func Authenticate(u models.User) (int, error) {
 	var id int
 	var hashedPassword string
 
-	row := stmt.QueryRow(u.Email)
+	row := stmt.QueryRow(u.Username)
 	err := row.Scan(&id, &hashedPassword)
 	if err != nil {
 		return 0, err

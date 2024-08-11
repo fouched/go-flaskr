@@ -24,7 +24,7 @@ func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	form := forms.New(r.PostForm)
-	form.Required("email", "password")
+	form.Required("username", "password")
 	if !form.Valid() {
 		component := templates.Login(&models.TemplateData{
 			Form: form,
@@ -34,7 +34,7 @@ func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := models.User{
-		Email:    r.Form.Get("email"),
+		Username: r.Form.Get("username"),
 		Password: r.Form.Get("password"),
 	}
 	id, err := repo.Authenticate(user)

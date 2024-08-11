@@ -67,19 +67,19 @@ func Register(td *models.TemplateData) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form method=\"POST\" action=\"/register\"><label for=\"email\" class=\"form-label\">Email</label> <input id=\"email\" name=\"email\" type=\"text\" class=\"form-control\" autocomplete=\"off\"> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form method=\"POST\" action=\"/register\"><label for=\"username\" class=\"form-label\">Username</label> <input id=\"username\" name=\"username\" type=\"text\" class=\"form-control\" autocomplete=\"off\"> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if td.Form.Errors.Get("password") != "" {
+		if td.Form.Errors.Get("username") != "" {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"text-danger mb-3\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(td.Form.Errors.Get("email"))
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(td.Form.Errors.Get("username"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/register.templ`, Line: 22, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/templates/register.templ`, Line: 22, Col: 81}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {

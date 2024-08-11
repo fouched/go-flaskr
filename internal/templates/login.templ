@@ -16,10 +16,10 @@ templ Login(td *models.TemplateData) {
                 <div class="text-danger">{td.Form.Errors.Get("heading")}</div>
             }
             <form method="POST" action="/login">
-                <label for="email" class="form-label">Email</label>
-                <input id="email" name="email" type="text" class="form-control" autocomplete="off">
-                if td.Form.Errors.Get("password") != "" {
-                    <div class="text-danger mb-3">{td.Form.Errors.Get("email")}</div>
+                <label for="username" class="form-label">Email</label>
+                <input id="username" name="username" type="text" class="form-control" autocomplete="off">
+                if td.Form.Errors.Get("username") != "" {
+                    <div class="text-danger mb-3">{td.Form.Errors.Get("username")}</div>
                 }
                 <label for="password" class="form-label">Password</label>
                 <input id="password" name="password" type="password" class="form-control">
