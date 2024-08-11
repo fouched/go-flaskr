@@ -43,7 +43,7 @@ func main() {
 
 func initApp() (*sql.DB, error) {
 
-	db, err := repo.CreateDb("./flaskr.db", false)
+	db, err := repo.CreateDb("./flaskr.sqlite", false)
 	if err != nil {
 		log.Fatal("Cannot connect to database! Dying...")
 	} else {
