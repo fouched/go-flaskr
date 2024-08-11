@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"context"
 	"errors"
 	"github.com/fouched/go-flaskr/internal/models"
 	"golang.org/x/crypto/bcrypt"
@@ -22,6 +23,37 @@ func InsertUser(u models.User) error {
 	}
 
 	return nil
+}
+
+func SelectAllPosts() ([]*models.Post, error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := "SELECT id, author_id, created, title, body FROM post"
+	rows, err := db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var posts []*models.Post
+	for rows.Next() {
+		var post models.Post
+		err := rows.Scan(
+			&post.ID,
+			&post.AuthorID,
+			&post.Created,
+			&post.Title,
+			&post.Body,
+		)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, &post)
+	}
+
+	return posts, nil
 }
 
 func Authenticate(u models.User) (int, error) {

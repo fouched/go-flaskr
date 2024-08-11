@@ -9,7 +9,13 @@ templ Home(td *models.TemplateData) {
 	<body>
 	@PageHeader(td)
 	<div class="container">
-        Hello Go Flaskr - with some Air for live reloading :-)
+    if td.Data["Posts"] == nil {
+        <p>No posts available</p>
+    } else {
+        for _, post := range td.Data["Posts"].([]models.Post) {
+            <p>{post.Title}</p>
+        }
+    }
 	</div>
 	</body>
 	</html>
