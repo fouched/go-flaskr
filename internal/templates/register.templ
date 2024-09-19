@@ -1,0 +1,35 @@
+package templates
+
+import "github.com/fouched/go-flaskr/internal/models"
+
+templ Register(td *models.TemplateData) {
+
+	<!doctype html>
+	<html lang="en">
+    @HtmlHeader()
+	<body>
+	@PageHeader(td)
+	<div class="container">
+        <div class="col-md-6 offset-md-3">
+            <h2 class="mb-3 text-center">Register</h2>
+            if td.Form.Errors.Get("heading") != "" {
+                <div class="text-danger">{td.Form.Errors.Get("heading")}</div>
+            }
+            <form method="POST" action="/register">
+                <label for="username" class="form-label">Username</label>
+                <input id="username" name="username" type="text" class="form-control" autocomplete="off">
+                if td.Form.Errors.Get("username") != "" {
+                    <div class="text-danger mb-3">{td.Form.Errors.Get("username")}</div>
+                }
+                <label for="password" class="form-label">Password</label>
+                <input id="password" name="password" type="password" class="form-control">
+                if td.Form.Errors.Get("password") != "" {
+                    <div class="text-danger mb-3">{td.Form.Errors.Get("password")}</div>
+                }
+                <input type="submit" class="btn btn-primary mt-3" value="Register" />
+            </form>
+        </div>
+	</div>
+	</body>
+	</html>
+}

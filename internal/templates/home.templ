@@ -1,0 +1,22 @@
+package templates
+
+import "github.com/fouched/go-flaskr/internal/models"
+
+templ Home(td *models.TemplateData) {
+	<!doctype html>
+	<html lang="en">
+    @HtmlHeader()
+	<body>
+	@PageHeader(td)
+	<div class="container">
+    if td.Data["Posts"] == nil {
+        <p>No posts available</p>
+    } else {
+        for _, post := range td.Data["Posts"].([]models.Post) {
+            <p>{post.Title}</p>
+        }
+    }
+	</div>
+	</body>
+	</html>
+}

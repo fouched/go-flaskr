@@ -11,15 +11,14 @@ import (
 	"strings"
 )
 
-func (a *HandlerConfig) RegisterGet(w http.ResponseWriter, r *http.Request) {
+func (a *HandlerConfig) LoginGet(w http.ResponseWriter, r *http.Request) {
 
-	component := templates.Register(DefaultTemplateData(r))
+	component := templates.Login(DefaultTemplateData(r))
 	_ = render.Template(w, r, component)
 }
 
-func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
+func (a *HandlerConfig) LoginPost(w http.ResponseWriter, r *http.Request) {
 
-	td := DefaultTemplateData(r)
 	err := r.ParseForm()
 	if err != nil {
 		fmt.Println(err)
@@ -28,31 +27,37 @@ func (a *HandlerConfig) RegisterPost(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
 	form.Required("username", "password")
 	if !form.Valid() {
-		td.Form = form
-		component := templates.Register(td)
+		component := templates.Login(&models.TemplateData{
+			Form: form,
+		})
 		_ = render.Template(w, r, component)
 		return
 	}
 
-	// forms passed persist the form
 	user := models.User{
 		Username: strings.ToLower(r.Form.Get("username")),
 		Password: r.Form.Get("password"),
 	}
-
-	err = repo.InsertUser(user)
+	id, err := repo.Authenticate(user)
 	if err != nil {
-		fmt.Println(err)
-		if strings.HasPrefix(err.Error(), "UNIQUE constraint") {
-			td.Form.Errors.Add("heading", "Username "+user.Username+" already taken.")
-		} else {
-			td.Form.Errors.Add("heading", "Unexpected error, please try again later.")
-		}
-		component := templates.Register(td)
+		form.Errors.Add("heading", "Invalid credentials")
+		component := templates.Login(&models.TemplateData{
+			Form: form,
+		})
 		_ = render.Template(w, r, component)
 		return
 	}
 
+	a.App.Session.Put(r.Context(), "userId", id)
 	// Good practice: prevent a post re-submit with a http redirect
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+
+}
+
+// Logout logs a user out
+func (a *HandlerConfig) Logout(w http.ResponseWriter, r *http.Request) {
+
+	_ = a.App.Session.Destroy(r.Context())
+	_ = a.App.Session.RenewToken(r.Context())
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
